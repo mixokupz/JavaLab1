@@ -2,22 +2,21 @@ package org.example;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 
 public class CsvStatistic {
 
-    public void Statist(CsvMapper map){
+    public void Statist(CsvSetter set){
 
         try(FileWriter writer = new FileWriter("C:\\Users\\Михаил\\IdeaProjects\\Lab1\\src\\main\\text\\stat.csv")){
             writer.append("Word,Count,Count in %\n");
-            Map<String,Integer> csvMap = map.returnMap();
-            int count = map.returnCount();
-            for(Map.Entry<String,Integer> entry: csvMap.entrySet()){
-                writer.append(entry.getKey());
+            int count = set.returnCount();
+            for(CsvPair pair : set.returnPair()){
+                writer.append(pair.getStr());
                 writer.append(";");
-                writer.append(entry.getValue().toString());
+                writer.append(pair.getFreq().toString());
                 writer.append(";");
-                float percent = (float)entry.getValue()*100 /count;
+                float percent = (float)pair.getFreq()*100 /count;
                 writer.append(String.format("%.2f", percent));
                 writer.append("\n");
             }
@@ -26,7 +25,6 @@ public class CsvStatistic {
         catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
     }
